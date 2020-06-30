@@ -1,0 +1,42 @@
+{
+  "name": "@aragonone/ipfs-background-service-server",
+  "version": "0.0.0",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "lint": "eslint src/** --ext .ts",
+    "test": "jest",
+    "build": "yarn lint && yarn check-types && yarn build:js",
+    "build:js": "babel ./src --out-dir ./lib --extensions .ts --root-mode upward",
+    "build:shared": "lerna run build --scope */*-shared --stream",
+    "build:clean": "yarn clean && yarn build",
+    "clean": "rm -rf ./lib",
+    "check-types": "tsc",
+    "start": "node ./lib/index.js",
+    "start:dev": "nodemon --exec 'babel-node --extensions .ts --root-mode upward' ./src/index.ts"
+  },
+  "dependencies": {
+    "@aragonone/ipfs-background-service-shared": "^0.0.0",
+    "@koa/cors": "^3.1.0",
+    "@koa/router": "^9.0.1",
+    "@promster/metrics": "^4.1.10",
+    "@promster/server": "^4.2.12",
+    "dotenv": "^8.2.0",
+    "http-status-codes": "^1.4.0",
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-helmet": "^5.2.0",
+    "koa-logger": "^3.2.1",
+    "prom-client": "^12.0.0"
+  },
+  "devDependencies": {
+    "@promster/types": "^1.0.6",
+    "@types/koa": "^2.11.3",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-helmet": "^5.2.0",
+    "@types/koa-logger": "^3.1.1",
+    "@types/koa__cors": "^3.0.1",
+    "@types/koa__router": "^8.0.2",
+    "@types/supertest": "^2.0.10",
+    "supertest": "^4.0.2"
+  }
+}

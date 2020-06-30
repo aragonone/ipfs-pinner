@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  server:
+    image: ${SERVER_IMAGE}
+    command: yarn start:server
+    env_file:
+    - .env

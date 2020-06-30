@@ -1,0 +1,20 @@
+name: Dashboard CI/CD
+on:
+  push:
+    branches:
+    - master
+    - development
+    paths:
+    - monitoring/grafana/provisioning/dashboards/ipfs-background-service.json
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: .github/scripts/kubectl-config.sh ${{secrets.KUBE_CA}} ${{secrets.KUBE_SERVER}} ${{secrets.KUBE_TOKEN}}
+    # replace Grafana dashboard ConfigMap
+    - run: >
+        kubectl create configmap ipfs-background-service-dashboard --from-file=monitoring/grafana/provisioning/dashboards/ipfs-background-service.json --dry-run -o yaml | 
+        kubectl label grafana_dashboard=ipfs-background-service -f - --local -o yaml | 
+        kubectl apply -f -
