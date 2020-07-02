@@ -10,7 +10,7 @@ on:
     - 'monitoring/**'
 env:
   # This is a base repository and we use ${GITHUB_SHA} to set the version of the container
-  REPO: docker.pkg.github.com/aragonone/ipfs-background-service/development
+  REPO: docker.pkg.github.com/aragonone/ipfs-background-service/staging
 
 jobs:
   build:
