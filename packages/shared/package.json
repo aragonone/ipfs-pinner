@@ -2,14 +2,14 @@
   "name": "@aragonone/ipfs-background-service-shared",
   "version": "0.0.0",
   "license": "GPL-3.0-or-later",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "lint": "eslint src/** --ext .ts",
     "build": "yarn lint && yarn build:types && yarn build:js",
     "build:types": "tsc",
-    "build:js": "babel ./src --out-dir ./lib --extensions .ts --root-mode upward",
+    "build:js": "babel ./src --out-dir ./build --extensions .ts --root-mode upward",
     "build:clean": "yarn clean && yarn build",
-    "clean": "rm -rf ./lib"
+    "clean": "rm -rf ./build"
   }
 }

@@ -6,12 +6,12 @@
     "lint": "eslint src/** --ext .ts",
     "test": "jest",
     "build": "yarn lint && yarn check-types && yarn build:js",
-    "build:js": "babel ./src --out-dir ./lib --extensions .ts --root-mode upward",
+    "build:js": "babel ./src --out-dir ./build --extensions .ts --root-mode upward",
     "build:shared": "lerna run build --scope */*-shared --stream",
     "build:clean": "yarn clean && yarn build",
-    "clean": "rm -rf ./lib",
+    "clean": "rm -rf ./build",
     "check-types": "tsc",
-    "start": "node ./lib/index.js",
+    "start": "node ./build/index.js",
     "start:dev": "nodemon --exec 'babel-node --extensions .ts --root-mode upward' ./src/index.ts"
   },
   "dependencies": {

@@ -4,7 +4,7 @@
     "src/**/*"
   ],
   "compilerOptions": {
-    "outDir": "./lib",
+    "outDir": "./build",
     "declaration": true,
     "emitDeclarationOnly": true
   }
