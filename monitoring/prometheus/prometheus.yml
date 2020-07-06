@@ -1,0 +1,10 @@
+# This config is required for Prometheus to scrape other containers
+scrape_configs:
+- job_name: ipfs-background-service
+  static_configs:
+  - targets: 
+    - server:9091
+    labels:
+      # required to be compatible with k8s metrics
+      service: ipfs-background-service
+      endpoint: server-metrics
