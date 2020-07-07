@@ -21,6 +21,7 @@
     "@promster/metrics": "^4.1.10",
     "@promster/server": "^4.2.12",
     "dotenv": "^8.2.0",
+    "ethers": "^5.0.4",
     "http-status-codes": "^1.4.0",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",

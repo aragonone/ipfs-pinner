@@ -8,7 +8,7 @@ const errors: Middleware = async (ctx, next) => {
     await next()
     // throw Not found error for the handler
     if (ctx.status == NOT_FOUND) {
-      ctx.throw(NOT_FOUND, { error: { request: 'Not found' } })
+      ctx.throw(NOT_FOUND, { errors: [ { request: 'Not found' } ] })
     }
   }
 
@@ -18,10 +18,10 @@ const errors: Middleware = async (ctx, next) => {
     if (ctx.headerSent) {
       return
     }
-    // these are errors thrown using ctx.throw(STATUS, { error: { type: message } })
+    // these are errors thrown using ctx.throw(STATUS, { errors: [ { type: message } ] })
     else if (err.status && err.status !== OK) {
       ctx.status = err.status
-      ctx.body = err.error ? { error: err.error } : err.message
+      ctx.body = err.errors ? { errors: err.errors } : err.message
     }
     // for unexpected internal errors show the stack
     else {
