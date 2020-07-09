@@ -23,18 +23,16 @@ describe('File creation', () => {
       file: 'test'
     })
     expect(res.status).toEqual(HttpStatus.OK)
-    expect(res.body).toEqual({
-      created: true
-    })
+    expect(res.body).toEqual(TEST_FILE_META)
   })
   
-  test('should unpin a file', async () => {
-    const res = await request(serverURL).post(`/files/${TEST_FILE_ADDR}:unpin`).send({
+  test('should delete a file', async () => {
+    const res = await request(serverURL).post(`/files/${TEST_FILE_ADDR}:delete`).send({
       signature: 'test'
     })
     expect(res.status).toEqual(HttpStatus.OK)
     expect(res.body).toEqual({
-      unpinned: true
+      deleted: true
     })
   })
   

@@ -19,26 +19,24 @@ export default class FilesController {
   static create: Middleware = async (ctx) => {
     FilesValidator.validateForCreate(ctx)
     await File.create('test')
+    ctx.body = dummy_file
+  }
+
+  static delete: Middleware = async (ctx) => {
+    FilesValidator.validateForDelete(ctx)
     ctx.body = {
-      created: true
+      deleted: true
     }
   }
 
-  static unpin: Middleware = async (ctx) => {
-    FilesValidator.validateForUnpin(ctx)
-    ctx.body = {
-      unpinned: true
-    }
-  }
-
-  static getAll: Middleware = async (ctx) => {
+  static findAll: Middleware = async (ctx) => {
     ctx.body = {
       total: 100,
       results: [dummy_file]
     }
   }
 
-  static getSingle: Middleware = async (ctx) => {
+  static findOne: Middleware = async (ctx) => {
     FilesValidator.validateForGetSingle(ctx)
     ctx.body = dummy_file
   }

@@ -28,7 +28,7 @@ export default class FilesValidator {
     if (errors.length) ctx.throw(BAD_REQUEST, {errors})
   }
 
-  static validateForUnpin: publicValidateFunction = (ctx) => {
+  static validateForDelete: publicValidateFunction = (ctx) => {
     FilesValidator.validateFileExists(ctx)
     const errors: error[] = []
     const { signature } = ctx.request.body
