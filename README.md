@@ -10,7 +10,7 @@ This is a mono-repo with the following packages:
 
 ## Local Docker setup
 
-Development environment is configured using [docker-comopse](https://docs.docker.com/compose/).
+Development environment is configured using [docker-compose](https://docs.docker.com/compose/).
 
 First make sure to create your own `.env`:
 ```bash

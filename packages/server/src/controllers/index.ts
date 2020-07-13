@@ -1,1 +1,1 @@
-export * as files from './files'
+export { default as FilesController } from './files'
