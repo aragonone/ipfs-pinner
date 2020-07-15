@@ -1,5 +1,6 @@
 import { Middleware } from 'koa'
-import { OK, NOT_FOUND, INTERNAL_SERVER_ERROR } from 'http-status-codes'
+import { OK, NOT_FOUND, INTERNAL_SERVER_ERROR, BAD_REQUEST } from 'http-status-codes'
+import { MulterError } from 'multer'
 
 const errors: Middleware = async (ctx, next) => {
 
@@ -22,6 +23,11 @@ const errors: Middleware = async (ctx, next) => {
     else if (err.status && err.status !== OK) {
       ctx.status = err.status
       ctx.body = err.errors ? { errors: err.errors } : err.message
+    }
+    // Multer file upload too large
+    else if (err instanceof MulterError && err.message == 'File too large') {
+      ctx.status = BAD_REQUEST
+      ctx.body = { errors: [ { file: err.message } ] }
     }
     // for unexpected internal errors show the stack
     else {

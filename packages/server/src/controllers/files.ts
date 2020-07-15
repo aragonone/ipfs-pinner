@@ -1,8 +1,14 @@
 import { Middleware } from 'koa'
+import ipfsClient, { globSource } from 'ipfs-http-client'
+import fs from 'fs'
+import { promisify } from 'util'
 
 import { ObjectionModels } from '@aragonone/ipfs-background-service-shared'
-const { File } = ObjectionModels
 import { FilesValidator } from '../helpers'
+
+const { File } = ObjectionModels
+const ipfs = ipfsClient(process.env.IPFS_API_URL)
+const deleteTempFile = promisify(fs.unlink)
 
 const dummy_file = {
   sizeBytes: 5712538,
@@ -17,8 +23,19 @@ const dummy_file = {
 
 export default class FilesController {
   static create: Middleware = async (ctx) => {
-    FilesValidator.validateForCreate(ctx)
-    await File.create('test')
+    const { body: { owner }, file } = ctx.request
+    try {
+      FilesValidator.validateForCreate(ctx)
+      for await (const ipfsFile of ipfs.add(globSource(file.path))) {
+        dummy_file.cid = ipfsFile.cid.toString()
+        await File.create('test')
+      }
+    }
+    catch (err) {
+      await deleteTempFile(file.path)
+      throw err
+    }
+    await deleteTempFile(file.path)
     ctx.body = dummy_file
   }
 

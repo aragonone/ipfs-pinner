@@ -1,11 +1,19 @@
 version: "3.8"
 
 services:
+
+  ipfs:
+    image: ipfs/go-ipfs:v0.6.0
+    ports:
+    - "8080:8080" # gateway for debugging
+    - "5001:5001" # API for debugging
+
   server:
     build: .
     image: aragon/ipfs-background-service
     command: yarn start:server:dev
     depends_on:
+    - ipfs
     - loki
     ports:
     - "${SERVER_PORT}:${SERVER_PORT}"
@@ -35,7 +43,7 @@ services:
   loki:
     image: grafana/loki
     ports:
-    - "3100:3100"
+    - "3100:3100" # required for loki plugin to work
 
   grafana:
     image: grafana/grafana
