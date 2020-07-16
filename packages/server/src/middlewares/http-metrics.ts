@@ -1,6 +1,6 @@
 import { Middleware } from 'koa'
 import { createServer } from '@promster/server'
-import { metricsReporter } from '../helpers'
+import metricsReporter from '../helpers/metrics-reporter'
 
 export default function httpMetrics(port?: string | number): Middleware {
 

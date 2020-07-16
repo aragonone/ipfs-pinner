@@ -16,12 +16,12 @@ RUN mkdir -p /packages/server
 COPY ./packages/server/package.json /app/packages/server/package.json
 
 # install dependencies
+COPY ./yarn.lock /app/yarn.lock
 RUN yarn install
 RUN yarn lerna bootstrap
 
-COPY . .
-
 # try building the app
+COPY . .
 RUN yarn build
 
 CMD echo specify one of the package.json scripts in command line
