@@ -5,5 +5,6 @@ cp .env.sample $DIR/.env
 cd $DIR
 export SERVER_IMAGE="$1"
 docker-compose up -d
+docker-compose exec -T server /bin/sh -c "npx wait-on http://localhost:\$SERVER_METRICS_PORT --timeout 20000"
 docker-compose exec -T server yarn test:server
 docker-compose down
