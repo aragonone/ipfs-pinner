@@ -7,7 +7,7 @@ import { ObjectionModels } from '@aragonone/ipfs-background-service-shared'
 const { File } = ObjectionModels
 const serverPort = process.env.SERVER_PORT || 8000
 const serverURL = `http://localhost:${serverPort}`
-const ipfs = ipfsClient('http://localhost:5001')
+const ipfs = ipfsClient(process.env.IPFS_API_URL)
 const TEST_OWNER_ADDR = '0x7410937813608C0C9f968C17A44A2bAA336C89c2'
 const TEST_FILE_NAME = 'test.txt'
 const TEST_FILE_CONTENT = Buffer.from('testcontent')
