@@ -26,10 +26,9 @@ export default class FilesController {
     const { body: { owner }, file } = ctx.request
     try {
       FilesValidator.validateForCreate(ctx)
-      for await (const ipfsFile of ipfs.add(globSource(file.path))) {
-        dummy_file.cid = ipfsFile.cid.toString()
-        await File.create('test')
-      }
+      const ipfsFile = await ipfs.add(globSource(file.path))
+      dummy_file.cid = ipfsFile.cid.toString()
+      await File.create('test')
     }
     catch (err) {
       await deleteTempFile(file.path)
