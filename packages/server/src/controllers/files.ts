@@ -46,7 +46,7 @@ export default class FilesController {
       throw err
     }
     await deleteTempFile(file.path)
-    ctx.body = await File.findOne({cid})
+    ctx.body = await File.findMeta({cid})
   }
 
   // delete endpoint to do later
@@ -60,16 +60,14 @@ export default class FilesController {
   static findAll: Middleware = async (ctx) => {
     await FilesValidator.validateForFindAll(ctx)
     const { owner, page = 0, pageSize = 10 } = ctx.params
-    let query = File.query().orderBy('createdAt', 'DESC').page(page, pageSize)
-    if (owner) {
-      query = query.where({owner})
-    }
-    ctx.body = await query
+    let args = {}
+    if (owner) args = {owner}
+    ctx.body = await File.findMetaPage(page, pageSize, args)
   }
 
   static findOne: Middleware = async (ctx) => {
     await FilesValidator.validateForFindOne(ctx)
     const { cid } = ctx.params
-    ctx.body = await File.findOne({cid})
+    ctx.body = await File.findMeta({cid})
   }
 }

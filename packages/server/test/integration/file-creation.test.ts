@@ -13,7 +13,6 @@ const TEST_FILE_NAME = 'test.txt'
 const TEST_FILE_CONTENT = Buffer.from('testcontent')
 const TEST_FILE_CID = 'QmX4bqZRY5p1sjNDMARQqcEho5SUX2CssoZYs6e3UijEEQ'
 const TEST_FILE_META = {
-  id: expect.any(Number),
   owner: TEST_OWNER_ADDR.toLocaleLowerCase(),
   cid: TEST_FILE_CID,
   verified: false,
@@ -21,9 +20,7 @@ const TEST_FILE_META = {
   originalName: TEST_FILE_NAME,
   encoding: '7bit',
   mimeType: 'text/plain',
-  expiresAt: expect.any(String),
   createdAt: expect.any(String),
-  updatedAt: expect.any(String),
 }
 
 describe('File creation', () => {
@@ -42,7 +39,7 @@ describe('File creation', () => {
       .field('owner', TEST_OWNER_ADDR)
       .attach('file', TEST_FILE_CONTENT, TEST_FILE_NAME)
     expect(res.status).toEqual(HttpStatus.OK)
-    expect(res.body).toMatchObject(TEST_FILE_META)
+    expect(res.body).toEqual(TEST_FILE_META)
   })
   
   // delete endpoint to do later
@@ -59,13 +56,13 @@ describe('File creation', () => {
   test('should get single file', async () => {
     const res = await request(serverURL).get(`/files/${TEST_FILE_CID}`).send()
     expect(res.status).toEqual(HttpStatus.OK)
-    expect(res.body).toMatchObject(TEST_FILE_META)
+    expect(res.body).toEqual(TEST_FILE_META)
   })
   
   test('should get list of files', async () => {
     const res = await request(serverURL).get(`/files`).send()
     expect(res.status).toEqual(HttpStatus.OK)
-    expect(res.body).toMatchObject({
+    expect(res.body).toEqual({
       total: 1,
       results: [TEST_FILE_META]
     })
