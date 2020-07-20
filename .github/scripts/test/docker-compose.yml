@@ -1,8 +1,13 @@
 version: "3.8"
 
 services:
+  ipfs:
+    image: ipfs/go-ipfs:v0.6.0
+
   server:
     image: ${SERVER_IMAGE}
     command: yarn start:server
+    depends_on:
+    - ipfs
     env_file:
     - .env

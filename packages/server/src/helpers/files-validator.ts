@@ -14,7 +14,7 @@ interface publicValidateFunction {
 export default class FilesValidator {
   static validateForCreate: publicValidateFunction = (ctx) => {
     const errors: error[] = []
-    const { owner, file } = ctx.request.body
+    const { body: { owner }, file } = ctx.request
     if (!owner) {
       errors.push({ owner: 'Owner address must be given' })
     }

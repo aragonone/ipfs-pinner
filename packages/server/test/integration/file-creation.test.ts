@@ -3,8 +3,10 @@ import request from 'supertest'
 
 const serverPort = process.env.SERVER_PORT || 8000
 const serverURL = `http://localhost:${serverPort}`
-const TEST_ADDR = '0x7410937813608C0C9f968C17A44A2bAA336C89c2'
-const TEST_FILE_ADDR = '0x7410937813608C0C9f968C17A44A2bAA336C89c2'
+const TEST_OWNER_ADDR = '0x7410937813608C0C9f968C17A44A2bAA336C89c2'
+const TEST_FILE_NAME = 'test.txt'
+const TEST_FILE_CONTENT = Buffer.from('testcontent')
+const TEST_FILE_CID = 'QmX4bqZRY5p1sjNDMARQqcEho5SUX2CssoZYs6e3UijEEQ'
 const TEST_FILE_META = {
   sizeBytes: 5712538,
   extension: "pdf",    
@@ -13,21 +15,21 @@ const TEST_FILE_META = {
   owner: "0x...",
   verified: false,
   transactionHash: "0x...",
-  cid: "Qm..."
+  cid: TEST_FILE_CID
 }
 
 describe('File creation', () => {
   test('should create a file', async () => {
-    const res = await request(serverURL).post('/files').send({
-      owner: TEST_ADDR,
-      file: 'test'
-    })
+    const res = await request(serverURL)
+      .post('/files')
+      .field('owner', TEST_OWNER_ADDR)
+      .attach('file', TEST_FILE_CONTENT, TEST_FILE_NAME)
     expect(res.status).toEqual(HttpStatus.OK)
     expect(res.body).toEqual(TEST_FILE_META)
   })
   
   test('should delete a file', async () => {
-    const res = await request(serverURL).post(`/files/${TEST_FILE_ADDR}:delete`).send({
+    const res = await request(serverURL).post(`/files/${TEST_FILE_CID}:delete`).send({
       signature: 'test'
     })
     expect(res.status).toEqual(HttpStatus.OK)
@@ -37,7 +39,7 @@ describe('File creation', () => {
   })
   
   test('should get single file', async () => {
-    const res = await request(serverURL).get(`/files/${TEST_FILE_ADDR}`).send()
+    const res = await request(serverURL).get(`/files/${TEST_FILE_CID}`).send()
     expect(res.status).toEqual(HttpStatus.OK)
     expect(res.body).toEqual(TEST_FILE_META)
   })
