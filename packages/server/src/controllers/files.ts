@@ -1,4 +1,5 @@
 import { Middleware } from 'koa'
+import multer from '@koa/multer'
 import ipfsClient, { globSource } from 'ipfs-http-client'
 import fs from 'fs'
 import { promisify } from 'util'
@@ -6,6 +7,13 @@ import { promisify } from 'util'
 import { ObjectionModels } from '@aragonone/ipfs-background-service-shared'
 import { FilesValidator } from '../helpers'
 
+const MEGABYTES = 10 ** 6
+const upload = multer({
+  limits: {
+    fileSize: 10 * MEGABYTES
+  },
+  dest: '/uploads'
+})
 const { File } = ObjectionModels
 const ipfs = ipfsClient(process.env.IPFS_API_URL)
 const deleteTempFile = promisify(fs.unlink)
@@ -22,6 +30,8 @@ const dummy_file = {
 }
 
 export default class FilesController {
+  static upload: Middleware = upload.single('file')
+
   static create: Middleware = async (ctx) => {
     const { body: { owner }, file } = ctx.request
     try {
