@@ -18,6 +18,7 @@ export default class FilesController {
     try {
       await FilesValidator.validateForCreate(ctx)
       const ipfsFile = await ipfs.add(globSource(file.path))
+      cid = ipfsFile.cid.toString()
       if (await File.exists({cid})) {
         ctx.throw(BAD_REQUEST, { errors: [ { file: `File is already uploaded with cid ${cid}`} ] })
       }
