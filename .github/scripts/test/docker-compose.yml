@@ -1,6 +1,12 @@
 version: "3.8"
 
 services:
+  postgres:
+    image: postgres:11-alpine
+    environment:
+    - POSTGRES_PASSWORD=${DB_PASS}
+    - POSTGRES_USER=${DB_USER}
+
   ipfs:
     image: ipfs/go-ipfs:v0.6.0
 
@@ -8,6 +14,7 @@ services:
     image: ${SERVER_IMAGE}
     command: yarn start:server
     depends_on:
+    - postgres
     - ipfs
     env_file:
     - .env

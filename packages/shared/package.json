@@ -10,6 +10,12 @@
     "build:types": "tsc",
     "build:js": "babel ./src --out-dir ./build --extensions .ts --root-mode upward",
     "build:clean": "yarn clean && yarn build",
-    "clean": "rm -rf ./build"
+    "clean": "rm -rf ./build",
+    "db:setup": "babel-node --extensions .ts --root-mode upward src/scripts/db-setup"
+  },
+  "dependencies": {
+    "knex": "^0.21.2",
+    "objection": "^2.2.1",
+    "pg": "^8.3.0"
   }
 }

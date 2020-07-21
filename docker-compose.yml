@@ -2,6 +2,15 @@ version: "3.8"
 
 services:
 
+  postgres:
+    image: postgres:11-alpine
+    environment:
+    - POSTGRES_DB:${DB_NAME}
+    - POSTGRES_USER=${DB_USER}
+    - POSTGRES_PASSWORD=${DB_PASS}
+    ports:
+    - "5432:5432" # for debugging db
+
   ipfs:
     image: ipfs/go-ipfs:v0.6.0
     ports:
@@ -13,14 +22,17 @@ services:
     image: aragon/ipfs-background-service
     command: yarn start:server:dev
     depends_on:
+    - postgres
     - ipfs
     - loki
     ports:
     - "${SERVER_PORT}:${SERVER_PORT}"
     - "${SERVER_METRICS_PORT}:${SERVER_METRICS_PORT}" # for debugging metrics
     volumes:
+    # speed up development by mounting some local directories with hot reload
     - ./packages/server/src:/app/packages/server/src
     - ./packages/server/test:/app/packages/server/test
+    - ./packages/shared/build:/app/packages/shared/build
     env_file:
     - .env
     logging: &loki

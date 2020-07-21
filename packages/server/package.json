@@ -11,8 +11,9 @@
     "build:clean": "yarn clean && yarn build",
     "clean": "rm -rf ./build",
     "check-types": "tsc",
-    "start": "node ./build/index.js",
-    "start:dev": "nodemon --exec 'babel-node --extensions .ts --root-mode upward' ./src/index.ts"
+    "start": "yarn db:setup && node ./build/index.js",
+    "start:dev": "yarn db:setup && nodemon --exec 'babel-node --extensions .ts --root-mode upward' ./src/index.ts",
+    "db:setup": "lerna run db:setup --scope */*-shared --stream"
   },
   "dependencies": {
     "@aragonone/ipfs-background-service-shared": "^0.0.0",
