@@ -1,11 +1,10 @@
 import { Middleware } from 'koa'
 import multer from '@koa/multer'
-import ipfsClient, { globSource } from 'ipfs-http-client'
 import fs from 'fs'
 import { promisify } from 'util'
 import { BAD_REQUEST } from 'http-status-codes'
 
-import { ObjectionModels } from '@aragonone/ipfs-background-service-shared'
+import { File, ipfs } from '@aragonone/ipfs-background-service-shared'
 import FilesValidator from '../helpers/files-validator'
 
 const MEGABYTES = 10 ** 6
@@ -15,8 +14,6 @@ const upload = multer({
   },
   dest: '/uploads'
 })
-const { File } = ObjectionModels
-const ipfs = ipfsClient(process.env.IPFS_API_URL)
 const deleteTempFile = promisify(fs.unlink)
 
 export default class FilesController {
@@ -27,8 +24,7 @@ export default class FilesController {
     let cid = ''
     try {
       await FilesValidator.validateForCreate(ctx)
-      const ipfsFile = await ipfs.add(globSource(file.path))
-      cid = ipfsFile.cid.toString()
+      cid = await ipfs.add(file.path)
       if (await File.exists({cid})) {
         ctx.throw(BAD_REQUEST, { errors: [ { file: `File is already uploaded with cid ${cid}`} ] })
       }

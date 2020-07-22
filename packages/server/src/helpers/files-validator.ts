@@ -2,8 +2,7 @@ import { Context } from 'koa'
 import { BAD_REQUEST, NOT_FOUND } from 'http-status-codes'
 import { utils } from 'ethers'
 
-import { ObjectionModels } from '@aragonone/ipfs-background-service-shared'
-const { File } = ObjectionModels
+import { File } from '@aragonone/ipfs-background-service-shared'
 
 interface error {
   [type: string]: string

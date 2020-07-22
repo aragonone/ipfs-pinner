@@ -42,6 +42,23 @@ services:
         # required to be compatible with k8s metrics
         loki-external-labels: container_name={{.Name}},app=ipfs-background-service
 
+  worker:
+    build: .
+    image: aragon/ipfs-background-service
+    command: yarn start:worker:dev
+    depends_on:
+    - server
+    ports:
+    - "${WORKER_METRICS_PORT}:${WORKER_METRICS_PORT}" # for debugging metrics
+    volumes:
+    # speed up development by mounting some local directories with hot reload
+    - ./packages/worker/src:/app/packages/worker/src
+    - ./packages/worker/test:/app/packages/worker/test
+    - ./packages/shared/build:/app/packages/shared/build
+    env_file:
+    - .env
+    logging: *loki
+
 
 ## Monitoring containers below
 

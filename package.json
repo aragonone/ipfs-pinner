@@ -12,7 +12,10 @@
     "build:shared": "lerna run build --scope */*-shared --stream",
     "test:server": "lerna run test --scope */*-server --stream",
     "start:server": "lerna run start --scope */*-server --stream",
-    "start:server:dev": "lerna run start:dev --scope */*-server --stream"
+    "start:server:dev": "lerna run start:dev --scope */*-server --stream",
+    "test:worker": "lerna run test --scope */*service-worker --stream",
+    "start:worker": "lerna run start --scope */*service-worker --stream",
+    "start:worker:dev": "lerna run start:dev --scope */*service-worker --stream"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.3",

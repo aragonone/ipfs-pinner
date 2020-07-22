@@ -15,6 +15,10 @@ COPY ./packages/shared/package.json /app/packages/shared/package.json
 RUN mkdir -p /packages/server
 COPY ./packages/server/package.json /app/packages/server/package.json
 
+# copy worker package json
+RUN mkdir -p /packages/worker
+COPY ./packages/worker/package.json /app/packages/worker/package.json
+
 # install dependencies
 COPY ./yarn.lock /app/yarn.lock
 RUN yarn install

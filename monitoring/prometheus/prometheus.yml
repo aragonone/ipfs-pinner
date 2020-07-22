@@ -5,6 +5,10 @@ scrape_configs:
   - targets: 
     - server:9091
     labels:
-      # required to be compatible with k8s metrics
       service: ipfs-background-service
       endpoint: server-metrics
+  - targets: 
+    - worker:9081
+    labels:
+      service: ipfs-background-service
+      endpoint: worker-metrics
