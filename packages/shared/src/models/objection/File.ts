@@ -1,6 +1,8 @@
 import BaseModel from './BaseModel'
 import { DAYS } from '../../helpers/times'
 
+const EXPIRATION_PERIOD = 1 * DAYS
+
 export default class File extends BaseModel {
   static get tableName(): string {
     return 'Files'
@@ -24,7 +26,7 @@ export default class File extends BaseModel {
     await super.$beforeInsert(queryContext)
     if (this.owner) this.owner = this.owner.toLowerCase() // sanitize address
     // expire in 1 day without verification
-    if (!this.expiresAt) this.expiresAt = new Date(Date.now() + 1 * DAYS)
+    if (!this.expiresAt) this.expiresAt = new Date(Date.now() + EXPIRATION_PERIOD)
     // to-do: set lastScannedBlock as current block
   }
   $beforeUpdate: BaseModel['$beforeUpdate'] = async (opt, queryContext) => {
