@@ -20,12 +20,9 @@
     "@koa/cors": "^3.1.0",
     "@koa/multer": "^3.0.0",
     "@koa/router": "^9.0.1",
-    "@promster/metrics": "^4.1.10",
-    "@promster/server": "^4.2.12",
     "dotenv": "^8.2.0",
     "ethers": "^5.0.4",
     "http-status-codes": "^1.4.0",
-    "ipfs-http-client": "^45.0.0",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
     "koa-helmet": "^5.2.0",
@@ -34,7 +31,6 @@
     "prom-client": "^12.0.0"
   },
   "devDependencies": {
-    "@promster/types": "^1.0.6",
     "@types/koa": "^2.11.3",
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-helmet": "^5.2.0",

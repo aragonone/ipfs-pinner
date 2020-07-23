@@ -1,14 +1,6 @@
-import { Prometheus } from '@promster/metrics'
+import { metrics } from '@aragonone/ipfs-background-service-shared'
 
-interface CounterMetrics {
-  [type: string]: {
-    name: string
-    help: string
-    labelNames: string[]
-  }[]
-}
-
-const COUNTER_METRICS: CounterMetrics = {
+const COUNTER_METRICS: metrics.CounterMetrics = {
   http: [
     {
       name: 'requests_total', 
@@ -18,33 +10,10 @@ const COUNTER_METRICS: CounterMetrics = {
   ]
 }
 
-class MetricsReporter {
-
-  counters: {
-    [type: string]: {
-      [name: string]: Prometheus.Counter<string>
-    }
-  }
-
-  constructor(metrics: CounterMetrics) {
-    this.counters = {}
-    this._initializeCounterMetrics(metrics)
-  }
-
+class MetricsReporter extends metrics.Reporter {
   httpRequest(labels: { [name: string]: string | number }) {
     this.counters.http.requests_total.inc({
       ... labels
-    })
-  }
-
-  private _initializeCounterMetrics(metrics: CounterMetrics) {
-    this.counters = {}
-    const { Counter } = Prometheus
-    Object.keys(metrics).forEach((type: string) => {
-      this.counters[type] = {}
-      metrics[type].forEach(({ name, help, labelNames }) => {
-        this.counters[type][name] = new Counter({ name: `${type}_${name}`, help, labelNames })
-      })
     })
   }
 }

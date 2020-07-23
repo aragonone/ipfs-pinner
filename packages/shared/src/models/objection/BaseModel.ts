@@ -23,7 +23,7 @@ export default class BaseModel extends Model {
 
   // static query methods (table level)
 
-  static findOne (args: any): AnyQueryBuilder {
+  static findOne(args: any): AnyQueryBuilder {
     return this.query().findOne(args)
   }
 
@@ -41,15 +41,23 @@ export default class BaseModel extends Model {
     return row
   }
 
-  static async exists (args: any): Promise<boolean> {
+  static async exists(args: any): Promise<boolean> {
     return !!(await this.findOne(args))
   }
 
-  static count (args: any): Promise<number> {
+  static count(args: any): Promise<number> {
     return this.query().where(args).resultSize()
+  }
+
+  static del(args: any): AnyQueryBuilder {
+    return this.query().where(args).del()
   }
   
 
   // instance query methods (row level)
+
+  del(): AnyQueryBuilder {
+    return this.$query().del()
+  }
   
 }

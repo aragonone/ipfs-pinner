@@ -12,6 +12,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('encoding')
     table.string('mimeType')
     table.dateTime('expiresAt').index()
+    table.string('lastScannedBlock')
     table.dateTime('createdAt').defaultTo(knex.fn.now()).notNullable()
     table.dateTime('updatedAt').defaultTo(knex.fn.now()).notNullable()
   })

@@ -1,6 +1,8 @@
 import BaseModel from './BaseModel'
 import { DAYS } from '../../helpers/times'
 
+const EXPIRATION_PERIOD = 1 * DAYS
+
 export default class File extends BaseModel {
   static get tableName(): string {
     return 'Files'
@@ -10,24 +12,26 @@ export default class File extends BaseModel {
   cid?: string
   verified?: boolean
   sizeBytes?: number
-  originalName?: string
-  encoding?: string
-  mimeType?: string
-  expiresAt?: Date
+  originalName?: string | null
+  encoding?: string | null
+  mimeType?: string | null
+  expiresAt?: Date | null
+  lastScannedBlock?: string
 
-  // sanitize owner address on find and insert
   static findOne(args: any) {
-    if (args.owner) args.owner = args.owner.toLowerCase()
+    if (args.owner) args.owner = args.owner.toLowerCase() // sanitize address
     return super.findOne(args)
   }
   $beforeInsert: BaseModel['$beforeInsert'] = async (queryContext) => {
     await super.$beforeInsert(queryContext)
-    if (this.owner) this.owner = this.owner.toLowerCase()
-    if (!this.expiresAt) this.expiresAt = new Date(Date.now() + 1 * DAYS) // expire in 1 day without verification
+    if (this.owner) this.owner = this.owner.toLowerCase() // sanitize address
+    // expire in 1 day without verification
+    if (!this.expiresAt) this.expiresAt = new Date(Date.now() + EXPIRATION_PERIOD)
+    // to-do: set lastScannedBlock as current block
   }
   $beforeUpdate: BaseModel['$beforeUpdate'] = async (opt, queryContext) => {
     await super.$beforeUpdate(opt, queryContext)
-    if (this.owner) this.owner = this.owner.toLowerCase()
+    if (this.owner) this.owner = this.owner.toLowerCase() // sanitize address
   }
 
   static async findMeta(args: any) {
@@ -55,5 +59,13 @@ export default class File extends BaseModel {
       mimeType,
       createdAt
     }
+  }
+
+  static findUnverified() {
+    return File.query().where({verified: false})
+  }
+
+  isExpired(): boolean {
+    return this.expiresAt != null && this.expiresAt < new Date(Date.now())
   }
 }

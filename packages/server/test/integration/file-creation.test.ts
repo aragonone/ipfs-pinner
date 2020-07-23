@@ -1,19 +1,16 @@
 import HttpStatus from 'http-status-codes'
 import request from 'supertest'
-import ipfsClient from 'ipfs-http-client'
 
-import { ObjectionModels } from '@aragonone/ipfs-background-service-shared'
+import { File, ipfs } from '@aragonone/ipfs-background-service-shared'
 
-const { File } = ObjectionModels
 const serverPort = process.env.SERVER_PORT || 8000
 const serverURL = `http://localhost:${serverPort}`
-const ipfs = ipfsClient(process.env.IPFS_API_URL)
 const TEST_OWNER_ADDR = '0x7410937813608C0C9f968C17A44A2bAA336C89c2'
 const TEST_FILE_NAME = 'test.txt'
 const TEST_FILE_CONTENT = Buffer.from('testcontent')
 const TEST_FILE_CID = 'QmX4bqZRY5p1sjNDMARQqcEho5SUX2CssoZYs6e3UijEEQ'
 const TEST_FILE_META = {
-  owner: TEST_OWNER_ADDR.toLocaleLowerCase(),
+  owner: TEST_OWNER_ADDR.toLowerCase(),
   cid: TEST_FILE_CID,
   verified: false,
   sizeBytes: 11,
@@ -26,11 +23,11 @@ const TEST_FILE_META = {
 describe('File creation', () => {
 
   // cleanup
-  afterAll(async() => {
-    await File.query().where({cid: TEST_FILE_CID}).del()
+  afterAll(async () => {
+    await File.del({cid: TEST_FILE_CID})
     await File.knex().destroy()
-    await ipfs.pin.rm(TEST_FILE_CID)
-    for await (const _ of ipfs.repo.gc()) { }
+    await ipfs.del(TEST_FILE_CID)
+    await ipfs.gc()
   })
 
   test('should create a file', async () => {
