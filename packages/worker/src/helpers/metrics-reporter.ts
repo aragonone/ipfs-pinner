@@ -5,6 +5,11 @@ const COUNTER_METRICS: metrics.CounterMetrics = {
     { name: 'runs', help: 'Total worker runs' },
     { name: 'success', help: 'Total successful worker runs' },
     { name: 'errors', help: 'Total worker run errors' },
+  ],
+  file: [
+    { name: 'scans', help: 'Total files scanned' },
+    { name: 'verified', help: 'Total verified files' },
+    { name: 'expired', help: 'Total expired files' },
   ]
 }
 
@@ -17,6 +22,15 @@ class MetricsReporter extends metrics.Reporter {
   }
   workerError() {
     this.counters.worker.errors.inc()
+  }
+  fileScanned() {
+    this.counters.file.scans.inc()
+  }
+  fileVerified() {
+    this.counters.file.verified.inc()
+  }
+  fileExpired() {
+    this.counters.file.expired.inc()
   }
 }
 

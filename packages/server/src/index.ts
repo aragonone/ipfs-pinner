@@ -21,5 +21,8 @@ app.use(routes)
 
 // Start main server
 const serverPort = process.env.SERVER_PORT || 8000
-app.listen(serverPort)
+const server = app.listen(serverPort)
 console.log(`Server started on port ${serverPort}`)
+
+// for running tests
+export { server }

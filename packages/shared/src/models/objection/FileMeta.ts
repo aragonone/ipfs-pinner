@@ -1,9 +1,10 @@
 import BaseModel from './BaseModel'
-import { DAYS } from '../../helpers/times'
+import { HOURS } from '../../helpers/times'
+import etherscan from '../etherscan'
 
-const EXPIRATION_PERIOD = 1 * DAYS
+const EXPIRATION_PERIOD = 24 * HOURS
 
-export default class File extends BaseModel {
+export default class FileMeta extends BaseModel {
   static get tableName(): string {
     return 'Files'
   }
@@ -16,7 +17,8 @@ export default class File extends BaseModel {
   encoding?: string | null
   mimeType?: string | null
   expiresAt?: Date | null
-  lastScannedBlock?: string
+  transactionHash?: string | null
+  lastScannedBlock?: number
 
   static findOne(args: any) {
     if (args.owner) args.owner = args.owner.toLowerCase() // sanitize address
@@ -27,7 +29,8 @@ export default class File extends BaseModel {
     if (this.owner) this.owner = this.owner.toLowerCase() // sanitize address
     // expire in 1 day without verification
     if (!this.expiresAt) this.expiresAt = new Date(Date.now() + EXPIRATION_PERIOD)
-    // to-do: set lastScannedBlock as current block
+    // set lastScannedBlock as current block
+    if (!this.lastScannedBlock) this.lastScannedBlock = await etherscan.getBlockNumber()
   }
   $beforeUpdate: BaseModel['$beforeUpdate'] = async (opt, queryContext) => {
     await super.$beforeUpdate(opt, queryContext)
@@ -40,15 +43,15 @@ export default class File extends BaseModel {
   }
 
   static async findMetaPage(page = 0, pageSize = 10, args = {}) {
-    const { total, results } = await File.query().orderBy('createdAt', 'DESC').page(page, pageSize).where(args)
+    const { total, results } = await this.query().orderBy('createdAt', 'DESC').page(page, pageSize).where(args)
     return {
       total,
-      results: results.map(model => File.filterMeta(model))
+      results: results.map(model => this.filterMeta(model))
     }
   }
 
-  static filterMeta(File: File) {
-    const { owner, cid, verified, sizeBytes, originalName, encoding, mimeType, createdAt } = File
+  static filterMeta(File: FileMeta) {
+    const { owner, cid, verified, sizeBytes, originalName, encoding, mimeType, transactionHash, createdAt } = File
     return {
       owner,
       cid,
@@ -57,12 +60,13 @@ export default class File extends BaseModel {
       originalName,
       encoding,
       mimeType,
+      transactionHash,
       createdAt
     }
   }
 
   static findUnverified() {
-    return File.query().where({verified: false})
+    return this.query().where({verified: false})
   }
 
   isExpired(): boolean {

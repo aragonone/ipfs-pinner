@@ -1,8 +1,8 @@
 import { Context } from 'koa'
 import { BAD_REQUEST, NOT_FOUND } from 'http-status-codes'
-import { utils } from 'ethers'
+import { isAddress } from 'web3-utils'
 
-import { File } from '@aragonone/ipfs-background-service-shared'
+import { FileMeta } from '@aragonone/ipfs-background-service-shared'
 
 interface error {
   [type: string]: string
@@ -20,7 +20,7 @@ export default class FilesValidator {
     if (!owner) {
       errors.push({ owner: 'Owner address must be given' })
     }
-    else if (!utils.isAddress(owner)) {
+    else if (!isAddress(owner)) {
       errors.push({ owner: 'Given address is not valid' })
     }
     if (!file) {
@@ -48,7 +48,7 @@ export default class FilesValidator {
   static validateForFindAll: publicValidateFunction = async (ctx) => {
     const errors: error[] = []
     const { owner, page, pageSize } = ctx.params
-    if (typeof owner !== 'undefined' && !utils.isAddress(owner)) {
+    if (typeof owner !== 'undefined' && !isAddress(owner)) {
       errors.push({ owner: 'Given address is not valid' })
     }
     if (typeof page !== 'undefined' && (typeof page != 'number' || page < 0)) {
@@ -61,7 +61,7 @@ export default class FilesValidator {
 
   static validateFileExists: publicValidateFunction = async (ctx) => {
     const { cid } = ctx.params
-    if (!await File.exists({cid})) {
+    if (!await FileMeta.exists({cid})) {
       ctx.throw(NOT_FOUND, { errors: [ { file: 'Not found' } ] })
     }
   }

@@ -1,22 +1,22 @@
 import { sleep, times, ipfs } from '@aragonone/ipfs-background-service-shared'
 import scan from './helpers/scanner'
-import metricsReporter from './helpers/metrics-reporter'
+import metrics from './helpers/metrics-reporter'
 
 const RUN_PERIOD = 10 * times.MINUTES
 
 async function main() {
   const port = process.env.WORKER_METRICS_PORT
-  await metricsReporter.createServer(port ? Number(port) : 9081)
+  await metrics.createServer(port ? Number(port) : 9081)
   for (let run = 1;; run++) {
-    metricsReporter.workerRun()
+    metrics.workerRun()
     console.log(`Starting worker run #${run}`)
     try {
       await scan()
       await ipfs.gc()
-      metricsReporter.workerSuccess()
+      metrics.workerSuccess()
       console.log(`Worker run #${run} completed successfully`)
     } catch (error) {
-      metricsReporter.workerError()
+      metrics.workerError()
       console.error(`Worker run #${run} failed with an error:`)
       console.error(error)
     }

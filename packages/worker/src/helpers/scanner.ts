@@ -1,22 +1,45 @@
-import { File, ipfs } from '@aragonone/ipfs-background-service-shared'
+import { FileMeta, ipfs, etherscan } from '@aragonone/ipfs-background-service-shared'
+import metrics from './metrics-reporter'
 
 export default async function scan() {
-  const files = await File.findUnverified()
+  const files = await FileMeta.findUnverified()
   for (const file of files) {
-    const { cid } = file
+    const { cid, owner } = file
     if (file.isExpired()) {
       await file.del()
-      await ipfs.del(String(cid))
+      await ipfs.del(cid!)
+      metrics.fileExpired()
+      console.log(`Expired file ${cid} deleted`)
     }
     else {
-      /*
-      to-do: scan blockchain:
-      - get lastScannedBlock from db
-      - get owner transaction receipts since lastScannedBlock
-      - get event data and look for cid
-      - set verified = true, expiresAt = null if cid is found
-      - update lastScannedBlock to current block
-      */
+      console.log(`Scanning owner address ${owner} for file ${cid}`)
+      await tryVerifyCid(file)
+      metrics.fileScanned()
     }
+  }
+}
+
+async function tryVerifyCid(file: FileMeta) {
+  const { cid, owner } = file
+  const startblock = file.lastScannedBlock! + 1
+  const { transactionHash, lastScannedBlock } = await etherscan.findIpfsCid(cid!, owner!, startblock!)
+  if (!lastScannedBlock) {
+    return
+  }
+  let updateArgs: any = {
+    transactionHash,
+    lastScannedBlock
+  }
+  if (transactionHash) {
+    updateArgs = {
+      ... updateArgs,
+      verified: true,
+      expiresAt: null
+    }
+  }
+  await FileMeta.update(updateArgs)
+  if (transactionHash) {
+    metrics.fileVerified()
+    console.log(`File ${cid} verified with transaction ${transactionHash}`)
   }
 }

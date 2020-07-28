@@ -31,7 +31,6 @@ services:
     volumes:
     # speed up development by mounting some local directories with hot reload
     - ./packages/server/src:/app/packages/server/src
-    - ./packages/server/test:/app/packages/server/test
     - ./packages/shared/build:/app/packages/shared/build
     env_file:
     - .env
@@ -53,11 +52,28 @@ services:
     volumes:
     # speed up development by mounting some local directories with hot reload
     - ./packages/worker/src:/app/packages/worker/src
-    - ./packages/worker/test:/app/packages/worker/test
     - ./packages/shared/build:/app/packages/shared/build
     env_file:
     - .env
     logging: *loki
+
+  # for running test commands
+  test: 
+    build: .
+    image: aragon/ipfs-background-service
+    command: sleep 365d
+    depends_on:
+    - postgres
+    - ipfs
+    volumes:
+    # speed up development by mounting some local directories with hot reload
+    - ./packages/server/src:/app/packages/server/src
+    - ./packages/server/test:/app/packages/server/test
+    - ./packages/worker/src:/app/packages/worker/src
+    - ./packages/worker/test:/app/packages/worker/test
+    - ./packages/shared/build:/app/packages/shared/build
+    env_file:
+    - .env
 
 
 ## Monitoring containers below

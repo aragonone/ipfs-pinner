@@ -16,12 +16,16 @@
   "dependencies": {
     "@promster/metrics": "^4.1.10",
     "@promster/server": "^4.2.12",
+    "axios": "^0.19.2",
     "ipfs-http-client": "^45.0.0",
     "knex": "^0.21.2",
     "objection": "^2.2.1",
-    "pg": "^8.3.0"
+    "pg": "^8.3.0",
+    "prom-client": "^12.0.0",
+    "web3-utils": "^1.2.11"
   },
   "devDependencies": {
-    "@promster/types": "^1.0.6"
+    "@promster/types": "^1.0.6",
+    "@types/bn.js": "^4.11.6"
   }
 }
