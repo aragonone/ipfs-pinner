@@ -23,7 +23,7 @@ export default class FilesController {
     const { body: { owner }, file } = ctx.request
     let cid = ''
     try {
-      await FilesValidator.validateForCreate(ctx)
+      FilesValidator.validateForCreate(ctx)
       cid = await ipfs.add(file.path)
       if (await FileMeta.exists({cid})) {
         ctx.throw(BAD_REQUEST, { errors: [ { file: `File is already uploaded with cid ${cid}`} ] })
@@ -45,16 +45,18 @@ export default class FilesController {
     ctx.body = await FileMeta.findMeta({cid})
   }
 
-  // delete endpoint to do later
-  // static delete: Middleware = async (ctx) => {
-  //   await FilesValidator.validateForDelete(ctx)
-  //   ctx.body = {
-  //     deleted: true
-  //   }
-  // }
+  static delete: Middleware = async (ctx) => {
+    await FilesValidator.validateForDelete(ctx)
+    const { cid } = ctx.params
+    await FileMeta.del({cid})
+    await ipfs.del(cid)
+    ctx.body = {
+      deleted: true
+    }
+  }
 
   static findAll: Middleware = async (ctx) => {
-    await FilesValidator.validateForFindAll(ctx)
+    FilesValidator.validateForFindAll(ctx)
     const { owner, page = 0, pageSize = 10 } = ctx.params
     let args = {}
     if (owner) args = {owner}

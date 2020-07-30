@@ -1,4 +1,4 @@
-import { sleep, times, ipfs } from '@aragonone/ipfs-background-service-shared'
+import { sleep, times } from '@aragonone/ipfs-background-service-shared'
 import scan from './helpers/scanner'
 import metrics from './helpers/metrics-reporter'
 
@@ -12,7 +12,6 @@ async function main() {
     console.log(`Starting worker run #${run}`)
     try {
       await scan()
-      await ipfs.gc()
       metrics.workerSuccess()
       console.log(`Worker run #${run} completed successfully`)
     } catch (error) {
