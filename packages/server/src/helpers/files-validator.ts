@@ -94,7 +94,7 @@ export default class FilesValidator {
     const { cid } = ctx.params
     const { owner } = await FileMeta.findOne({cid})
     const signedAddress = utils.verifyMessage(String(timestamp), signature)
-    if (owner.toLowerCase() !== signedAddress.toLowerCase()) {
+    if (owner !== signedAddress.toLowerCase()) {
       errors.push({ signature: 'Signature address and owner address do not match' })
     }
   }
