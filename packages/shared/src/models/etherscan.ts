@@ -3,6 +3,13 @@ import { toHex, hexToNumber } from 'web3-utils'
 
 type ethNetwork = 'mainnet' | 'rinkeby' | 'ropsten'
 const { ETHERSCAN_API_KEY, ETHERSCAN_NETWORK } = process.env
+interface transaction {
+  blockNumber: string,
+  hash: string,
+  from: string,
+  to: string,
+  input: string,
+}
 
 class Etherscan {
 
@@ -25,15 +32,15 @@ class Etherscan {
   async findIpfsCid(cid: string, address: string, startblock: number) {
     const transactions = await this.getTransactionsFrom(address, startblock)
     const cidHex = toHex(cid).replace('0x', '')
-    const { hash } = transactions.find(({ input } : { input: Array<string> }) => input.includes(cidHex)) || {}
-    const lastScannedBlock = transactions[transactions.length-1]?.blockNumber
+    const { hash } = transactions.find(({ input }) => input.includes(cidHex)) || { hash: null }
+    const lastScannedBlock = transactions[transactions.length-1]?.blockNumber || null
     return { 
       transactionHash: hash, 
       lastScannedBlock
     }
   }
   
-  async getTransactionsFrom(address: string, startblock: number) {
+  async getTransactionsFrom(address: string, startblock: number): Promise<transaction[]> {
     const data = await this.get({
       module: 'account',
       action: 'txlist',
@@ -47,7 +54,7 @@ class Etherscan {
     return data.result
   }
   
-  async getBlockNumber() {
+  async getBlockNumber(): Promise<number> {
     const data = await this.get({
       module: 'proxy',
       action: 'eth_blockNumber',
@@ -58,13 +65,13 @@ class Etherscan {
     return hexToNumber(data.result)
   }
 
-  private async get(params: AxiosRequestConfig['params']) {
+  private async get(params: AxiosRequestConfig['params']): Promise<any> {
     params.apikey = this.apiKey
     const { data } = await axios.get(this.apiUrl, { params })
     return data
   }
 
-  private error(data: any) {
+  private error(data: any): Error {
     return Error(`Received error from Etherscan: ${JSON.stringify(data)}`)
   }
 }

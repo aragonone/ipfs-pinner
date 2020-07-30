@@ -27,12 +27,12 @@ async function tryVerifyCid(file: FileMeta) {
     return
   }
   let updateArgs: any = {
-    transactionHash,
     lastScannedBlock
   }
   if (transactionHash) {
     updateArgs = {
       ... updateArgs,
+      transactionHash,
       verified: true,
       expiresAt: null
     }
