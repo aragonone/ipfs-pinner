@@ -3,6 +3,7 @@ import { HOURS } from '../../helpers/times'
 import etherscan from '../etherscan'
 
 const EXPIRATION_PERIOD = 24 * HOURS
+const LAST_SCANNED_BLOCK_OFFSET = 10
 
 export default class FileMeta extends BaseModel {
   static get tableName(): string {
@@ -29,8 +30,8 @@ export default class FileMeta extends BaseModel {
     if (this.owner) this.owner = this.owner.toLowerCase() // sanitize address
     // expire in 1 day without verification
     if (!this.expiresAt) this.expiresAt = new Date(Date.now() + EXPIRATION_PERIOD)
-    // set lastScannedBlock as current block
-    if (!this.lastScannedBlock) this.lastScannedBlock = await etherscan.getBlockNumber()
+    // set lastScannedBlock as current block - LAST_SCANNED_BLOCK_OFFSET
+    if (!this.lastScannedBlock) this.lastScannedBlock = await etherscan.getBlockNumber() - LAST_SCANNED_BLOCK_OFFSET
   }
   $beforeUpdate: BaseModel['$beforeUpdate'] = async (opt, queryContext) => {
     await super.$beforeUpdate(opt, queryContext)
