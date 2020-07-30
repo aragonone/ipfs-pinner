@@ -70,7 +70,7 @@ export default class FilesValidator {
     else if (Number(timestamp) > Date.now()) {
       errors.push({timestamp: 'Given timestamp is not valid'})
     }
-    else if (Number(timestamp) < Date.now()-SIGNATURE_TIMESTAMP_EXPIRES) {
+    else if (Number(timestamp) < Date.now() - SIGNATURE_TIMESTAMP_EXPIRES) {
       errors.push({timestamp: 'Given timestamp is obsolete'})
     }
   }
