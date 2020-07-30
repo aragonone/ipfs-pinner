@@ -1,5 +1,6 @@
 import { Prometheus } from '@promster/metrics'
 import { createServer } from '@promster/server'
+import { Server } from 'http'
 
 export interface CounterMetrics {
   [type: string]: {
@@ -10,6 +11,8 @@ export interface CounterMetrics {
 }
 
 export class Reporter {
+
+  server: Server | null = null
 
   counters: {
     [type: string]: {
@@ -34,7 +37,7 @@ export class Reporter {
   }
 
   async createServer(port: number): Promise<void> {
-    await createServer({port})
+    this.server = await createServer({port})
     console.log(`Prometheus metrics server started on port ${port}`)
   }
 }

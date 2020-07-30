@@ -1,5 +1,6 @@
-export { default as File } from './models/objection/File'
+export { default as FileMeta } from './models/objection/FileMeta'
 export { default as sleep } from './helpers/sleep'
 export * as times from './helpers/times'
 export { default as ipfs } from './models/ipfs'
 export * as metrics from './helpers/metrics-reporter'
+export { default as etherscan } from './models/etherscan'

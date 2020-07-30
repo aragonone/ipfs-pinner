@@ -7,8 +7,9 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
-    // allow using any for Objection custom Model methods
+    // allow using any and non null assertion for Objection models
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off"
   }
 }

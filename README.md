@@ -5,7 +5,8 @@ This service provides a blockchain-based authentication wrapper for ipfs request
 This is a mono-repo with the following packages:
 
 - [`server`](./packages/server): Exposes the REST API.
-- [`shared`](./packages/shared): Packages shared among other sub-repos.
+- [`shared`](./packages/shared): Libraries shared among other sub-repos.
+- [`worker`](./packages/worker): Background worker for veryfing and cleaning uploaded files.
 
 
 ## Local Docker setup
@@ -33,6 +34,30 @@ docker-compose up --build -d
 When finished remove the containers with:
 ```bash
 docker-compose down
+```
+
+
+## Development and testing
+
+Docker compose is set up using `nodemon` with some local volume mounts for quicker development (`src`, `test` and `shared/build`, see `docker-compose.yaml` for details)
+
+Repos can be built locally using:
+```bash
+yarn lerna bootstrap
+yarn build:shared # shared only
+yarn build        # all packages
+```
+
+Note that `nodemon` cannot pick up changed files from `shared` sub-repo after `yarn build:shared`, so you need to restart the containers:
+```bash
+docker-compose down
+docker-compose up -d
+```
+
+Local tests can then be run using:
+```bash
+docker-compose exec test yarn test:server
+docker-compose exec test yarn test:worker
 ```
 
 ## Grafana dashboard updates

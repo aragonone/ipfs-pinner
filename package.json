@@ -9,6 +9,7 @@
   "scripts": {
     "build": "lerna run build --stream",
     "lint": "lerna run lint --stream",
+    "db:setup": "lerna run db:setup --scope */*-shared --stream",
     "build:shared": "lerna run build --scope */*-shared --stream",
     "test:server": "lerna run test --scope */*-server --stream",
     "start:server": "lerna run start --scope */*-server --stream",

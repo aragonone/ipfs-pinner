@@ -12,12 +12,12 @@ export default class BaseModel extends Model {
   }
 
   id!: MaybeCompositeId
-  updatedAt?: Date | string
-  createdAt?: Date | string
+  updatedAt?: Date
+  createdAt?: Date
 
   $beforeUpdate: Model['$beforeUpdate'] = async (opt, queryContext) => {
     await super.$beforeUpdate(opt, queryContext)
-    this.updatedAt = new Date().toISOString()
+    this.updatedAt = new Date()
   }
 
 
@@ -29,6 +29,10 @@ export default class BaseModel extends Model {
 
   static findById(id: BaseModel['id']): AnyQueryBuilder {
     return this.query().findById(id)
+  }
+
+  static update(args: any): AnyQueryBuilder {
+    return this.query().update(args)
   }
 
   static create (args: any): AnyQueryBuilder {

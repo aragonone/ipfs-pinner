@@ -1,5 +1,7 @@
 import ipfsClient, { globSource } from 'ipfs-http-client'
 
+const { IPFS_API_URL } = process.env
+
 interface CID {
   multibaseName: string
   toString(): string
@@ -38,7 +40,10 @@ class Ipfs {
       await this.ipfs.pin.rm(cid)
       deleted = true
     }
-    catch {
+    catch (err) {
+      if (err.message != `not pinned or pinned indirectly`) {
+        throw err
+      }
       deleted = false
     }
     return deleted
@@ -50,7 +55,10 @@ class Ipfs {
       for await (const _ of this.ipfs.pin.ls({paths: cid})) { _ }
       exists = true
     }
-    catch { 
+    catch (err) {
+      if (err.message != `path '${cid}' is not pinned`) {
+        throw err
+      }
       exists = false
     }
     return exists
@@ -61,4 +69,4 @@ class Ipfs {
   }
 }
 
-export default new Ipfs(String(process.env.IPFS_API_URL))
+export default new Ipfs(IPFS_API_URL as string)
