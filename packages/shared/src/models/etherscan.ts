@@ -23,20 +23,12 @@ class Etherscan {
   }
   
   async findIpfsCid(cid: string, address: string, startblock: number) {
-    let transactionHash: string | null = null
-    let lastScannedBlock: number | null = null
     const transactions = await this.getTransactionsFrom(address, startblock)
     const cidHex = toHex(cid).replace('0x', '')
-    for (const { hash, blockNumber, input } of transactions) {
-      lastScannedBlock = blockNumber
-      if (input.includes(cidHex)) {
-        transactionHash = hash
-        break
-      }
-    }
-    return {
-      transactionHash,
-      lastScannedBlock
+    const { hash, blockNumber } = transactions.find(({ input } : { input: Array<string> }) => input.includes(cidHex)) || {}
+    return { 
+      transactionHash: hash, 
+      lastScannedBlock: blockNumber
     }
   }
   
