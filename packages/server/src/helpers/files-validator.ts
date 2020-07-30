@@ -4,7 +4,7 @@ import { utils } from 'ethers'
 
 import { FileMeta, times } from '@aragonone/ipfs-background-service-shared'
 
-const SIGNATURE_TIMESTAMP_EXPIRES = times.MINUTES * 10
+const SIGNATURE_TIMESTAMP_EXPIRATION = times.MINUTES * 10
 interface error {
   [type: string]: string
 }
@@ -70,7 +70,7 @@ export default class FilesValidator {
     else if (Number(timestamp) > Date.now()) {
       errors.push({timestamp: 'Given timestamp is not valid'})
     }
-    else if (Number(timestamp) < Date.now() - SIGNATURE_TIMESTAMP_EXPIRES) {
+    else if (Number(timestamp) < Date.now() - SIGNATURE_TIMESTAMP_EXPIRATION) {
       errors.push({timestamp: 'Given timestamp is obsolete'})
     }
   }
