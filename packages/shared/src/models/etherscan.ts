@@ -25,10 +25,11 @@ class Etherscan {
   async findIpfsCid(cid: string, address: string, startblock: number) {
     const transactions = await this.getTransactionsFrom(address, startblock)
     const cidHex = toHex(cid).replace('0x', '')
-    const { hash, blockNumber } = transactions.find(({ input } : { input: Array<string> }) => input.includes(cidHex)) || {}
+    const { hash } = transactions.find(({ input } : { input: Array<string> }) => input.includes(cidHex)) || {}
+    const lastScannedBlock = transactions[transactions.length-1]?.blockNumber
     return { 
       transactionHash: hash, 
-      lastScannedBlock: blockNumber
+      lastScannedBlock
     }
   }
   
