@@ -68,7 +68,7 @@ describe('Scanner functionality', () => {
       etherscan.getTransactionsFrom = () => Promise.resolve([
         {
           hash: 'testhash', 
-          blockNumber: 10500000, 
+          blockNumber: '10500000', 
           input: 'testcontent'
         }
       ])
@@ -87,8 +87,8 @@ describe('Scanner functionality', () => {
       etherscan.getTransactionsFrom = () => Promise.resolve([
         {
           hash: 'testhash', 
-          blockNumber: 10500000, 
-          input: `testcontent${toHex(TEST_FILE_CID)}testcontent`
+          blockNumber: '10500000', 
+          input: `testcontent${toHex(TEST_FILE_CID)}testcontent`,
         }
       ])
     })

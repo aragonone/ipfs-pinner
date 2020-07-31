@@ -6,8 +6,6 @@ const { ETHERSCAN_API_KEY, ETHERSCAN_NETWORK } = process.env
 interface transaction {
   blockNumber: string,
   hash: string,
-  from: string,
-  to: string,
   input: string,
 }
 
@@ -33,7 +31,7 @@ class Etherscan {
     const transactions = await this.getTransactionsFrom(address, startblock)
     const cidHex = toHex(cid).replace('0x', '')
     const { hash } = transactions.find(({ input }) => input.includes(cidHex)) || { hash: null }
-    const lastScannedBlock = transactions[transactions.length-1]?.blockNumber || null
+    const lastScannedBlock = Number(transactions[transactions.length-1]?.blockNumber) || null
     return { 
       transactionHash: hash, 
       lastScannedBlock
