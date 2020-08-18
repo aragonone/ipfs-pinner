@@ -1,4 +1,4 @@
-# IPFS Background Service - Server
+# IPFS Pinner - Server
 
 This package exposes the REST API.
 

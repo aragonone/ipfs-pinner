@@ -1,4 +1,4 @@
-# IPFS Background Service - Worker
+# IPFS Pinner - Worker
 
 Background worker for veryfing and cleaning uploaded files.
 

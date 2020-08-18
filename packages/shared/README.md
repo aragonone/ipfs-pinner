@@ -1,4 +1,4 @@
-# IPFS Background Service - Shared
+# IPFS Pinner - Shared
 
 This package contains some libraries shared among other sub-repos:
 
