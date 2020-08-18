@@ -41,4 +41,4 @@ jobs:
     - run: .github/scripts/kubectl-set-image.sh ipfs-pinner $REPO:${GITHUB_REF##*/}
     - run: .github/scripts/kubectl-wait-ready.sh ipfs-pinner
     # wait 10 sec for k8s to reroute ingress and check the endpoint
-    - run: sleep 10 && curl --fail https://ipfs-service.backend.aragon.org
+    - run: sleep 10 && curl --fail https://ipfs-pinner.backend.aragon.org
