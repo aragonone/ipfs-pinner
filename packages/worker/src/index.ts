@@ -1,4 +1,4 @@
-import { sleep, times } from '@aragonone/ipfs-background-service-shared'
+import { sleep, times } from '@aragonone/ipfs-pinner-shared'
 import scan from './helpers/scanner'
 import metrics from './helpers/metrics-reporter'
 

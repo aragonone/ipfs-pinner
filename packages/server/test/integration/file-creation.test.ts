@@ -4,7 +4,7 @@ import { Server } from 'http'
 import { Wallet } from 'ethers'
 
 import metricsReporter from '../../src/helpers/metrics-reporter'
-import { FileMeta, ipfs, etherscan } from '@aragonone/ipfs-background-service-shared'
+import { FileMeta, ipfs, etherscan } from '@aragonone/ipfs-pinner-shared'
 
 const TEST_OWNER_ADDR = '0x4e1326002e313a0245FC0a1C2fd8E0684C9a0C5A'
 const TEST_PRIVATE_KEY = '0x407eeeb61674af71138c7013be2a995b0e3323093dce7a4f3e58cf5112db236f'

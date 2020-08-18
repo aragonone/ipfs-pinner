@@ -1,5 +1,5 @@
 {
-  "name": "@aragonone/ipfs-background-service-shared",
+  "name": "@aragonone/ipfs-pinner-shared",
   "version": "0.0.0",
   "license": "GPL-3.0-or-later",
   "main": "build/index.js",

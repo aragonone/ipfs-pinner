@@ -4,7 +4,7 @@ import fs from 'fs'
 import { promisify } from 'util'
 import { BAD_REQUEST } from 'http-status-codes'
 
-import { FileMeta, ipfs } from '@aragonone/ipfs-background-service-shared'
+import { FileMeta, ipfs } from '@aragonone/ipfs-pinner-shared'
 import FilesValidator from '../helpers/files-validator'
 
 const MEGABYTES = 10 ** 6

@@ -19,7 +19,7 @@ services:
 
   server:
     build: .
-    image: aragon/ipfs-background-service
+    image: aragon/ipfs-pinner
     command: yarn start:server:dev
     depends_on:
     - postgres
@@ -39,11 +39,11 @@ services:
       options:
         loki-url: http://localhost:3100/loki/api/v1/push
         # required to be compatible with k8s metrics
-        loki-external-labels: container_name={{.Name}},app=ipfs-background-service
+        loki-external-labels: container_name={{.Name}},app=ipfs-pinner
 
   worker:
     build: .
-    image: aragon/ipfs-background-service
+    image: aragon/ipfs-pinner
     command: yarn start:worker:dev
     depends_on:
     - server
@@ -60,8 +60,8 @@ services:
   # for running test commands
   test: 
     build: .
-    image: aragon/ipfs-background-service
-    command: sleep 365d
+    image: aragon/ipfs-pinner
+    command: sleep infinity
     depends_on:
     - postgres
     - ipfs

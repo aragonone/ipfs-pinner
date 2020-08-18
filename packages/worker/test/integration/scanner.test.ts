@@ -1,4 +1,4 @@
-import { FileMeta, ipfs, etherscan } from '@aragonone/ipfs-background-service-shared'
+import { FileMeta, ipfs, etherscan } from '@aragonone/ipfs-pinner-shared'
 import scan from '../../src/helpers/scanner'
 import { toHex } from 'web3-utils'
 

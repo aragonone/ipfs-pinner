@@ -1,4 +1,4 @@
-import { metrics } from '@aragonone/ipfs-background-service-shared'
+import { metrics } from '@aragonone/ipfs-pinner-shared'
 
 const COUNTER_METRICS: metrics.CounterMetrics = {
   worker: [

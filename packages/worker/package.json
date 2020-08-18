@@ -1,5 +1,5 @@
 {
-  "name": "@aragonone/ipfs-background-service-worker",
+  "name": "@aragonone/ipfs-pinner-worker",
   "version": "0.0.0",
   "license": "GPL-3.0-or-later",
   "scripts": {
@@ -16,6 +16,6 @@
     "db:setup": "lerna run db:setup --scope */*-shared --stream"
   },
   "dependencies": {
-    "@aragonone/ipfs-background-service-shared": "^0.0.0"
+    "@aragonone/ipfs-pinner-shared": "^0.0.0"
   }
 }

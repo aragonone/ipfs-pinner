@@ -1,14 +1,14 @@
 # This config is required for Prometheus to scrape other containers
 scrape_configs:
-- job_name: ipfs-background-service
+- job_name: ipfs-pinner
   static_configs:
   - targets: 
     - server:9091
     labels:
-      service: ipfs-background-service
+      service: ipfs-pinner
       endpoint: server-metrics
   - targets: 
     - worker:9081
     labels:
-      service: ipfs-background-service
+      service: ipfs-pinner
       endpoint: worker-metrics

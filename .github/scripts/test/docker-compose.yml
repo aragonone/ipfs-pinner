@@ -12,7 +12,7 @@ services:
 
   test:
     image: ${SERVER_IMAGE}
-    command: sleep 365d
+    command: sleep infinity
     depends_on:
     - postgres
     - ipfs

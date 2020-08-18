@@ -2,7 +2,7 @@ import { Context } from 'koa'
 import { BAD_REQUEST, NOT_FOUND } from 'http-status-codes'
 import { utils } from 'ethers'
 
-import { FileMeta, times } from '@aragonone/ipfs-background-service-shared'
+import { FileMeta, times } from '@aragonone/ipfs-pinner-shared'
 
 const SIGNATURE_TIMESTAMP_EXPIRATION = times.MINUTES * 10
 interface error {

@@ -1,4 +1,4 @@
-import { FileMeta, ipfs, etherscan } from '@aragonone/ipfs-background-service-shared'
+import { FileMeta, ipfs, etherscan } from '@aragonone/ipfs-pinner-shared'
 import metrics from './metrics-reporter'
 
 export default async function scan() {

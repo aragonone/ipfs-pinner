@@ -1,5 +1,5 @@
 {
-  "name": "@aragonone/ipfs-background-service-server",
+  "name": "@aragonone/ipfs-pinner-server",
   "version": "0.0.0",
   "license": "GPL-3.0-or-later",
   "scripts": {
@@ -16,7 +16,7 @@
     "db:setup": "lerna run db:setup --scope */*-shared --stream"
   },
   "dependencies": {
-    "@aragonone/ipfs-background-service-shared": "^0.0.0",
+    "@aragonone/ipfs-pinner-shared": "^0.0.0",
     "@koa/cors": "^3.1.0",
     "@koa/multer": "^3.0.0",
     "@koa/router": "^9.0.1",

@@ -837,18 +837,18 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "ipfs-background-service",
-          "value": "ipfs-background-service"
+          "text": "ipfs-pinner",
+          "value": "ipfs-pinner"
         },
         "datasource": "Prometheus",
-        "definition": "label_values({job=~\"(.*/)?ipfs-background-service(-.*)?\"}, service)",
+        "definition": "label_values({job=~\"(.*/)?ipfs-pinner(-.*)?\"}, service)",
         "hide": 0,
         "includeAll": false,
         "label": "",
         "multi": false,
         "name": "service",
         "options": [],
-        "query": "label_values({job=~\"(.*/)?ipfs-background-service(-.*)?\"}, service)",
+        "query": "label_values({job=~\"(.*/)?ipfs-pinner(-.*)?\"}, service)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -879,7 +879,7 @@
     ]
   },
   "timezone": "",
-  "title": "IPFS Background Service",
+  "title": "IPFS Pinner",
   "uid": "WCs6qNGMz",
   "version": 1
 }

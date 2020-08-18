@@ -1,4 +1,4 @@
-# IPFS Background Service
+# IPFS Pinner
 
 This service provides a blockchain-based authentication wrapper for ipfs requests.
 
@@ -62,7 +62,7 @@ docker-compose exec test yarn test:worker
 
 ## Grafana dashboard updates
 
-To update the dashboard, click `Ctrl+S` > `Copy JSON to clipboard` and overwrite the file in `monitoring/grafana/provisioning/dashboards/ipfs-background-service.json`.
+To update the dashboard, click `Ctrl+S` > `Copy JSON to clipboard` and overwrite the file in `monitoring/grafana/provisioning/dashboards/ipfs-pinner.json`.
 
 
 ## CI/CD

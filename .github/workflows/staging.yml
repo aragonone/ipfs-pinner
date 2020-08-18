@@ -10,7 +10,7 @@ on:
     - 'monitoring/**'
 env:
   # This is a base repository and we use ${GITHUB_SHA} to set the version of the container
-  REPO: docker.pkg.github.com/aragonone/ipfs-background-service/staging
+  REPO: docker.pkg.github.com/aragonone/ipfs-pinner/staging
 
 jobs:
   build:
@@ -44,7 +44,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: .github/scripts/kubectl-config.sh ${{secrets.KUBE_CA}} ${{secrets.KUBE_SERVER}} ${{secrets.KUBE_TOKEN}}
-    - run: .github/scripts/kubectl-set-image.sh ipfs-background-service-staging $REPO:${GITHUB_SHA}
-    - run: .github/scripts/kubectl-wait-ready.sh ipfs-background-service-staging
+    - run: .github/scripts/kubectl-set-image.sh ipfs-pinner-staging $REPO:${GITHUB_SHA}
+    - run: .github/scripts/kubectl-wait-ready.sh ipfs-pinner-staging
     # wait 10 sec for k8s to reroute ingress and check the endpoint
     - run: sleep 10 && curl --fail https://ipfs-service-staging.backend.aragon.org
