@@ -72,6 +72,7 @@ services:
     - ./packages/worker/src:/app/packages/worker/src
     - ./packages/worker/test:/app/packages/worker/test
     - ./packages/shared/build:/app/packages/shared/build
+    - ./packages/client/build:/app/packages/client/build
     env_file:
     - .env
 

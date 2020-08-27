@@ -1,11 +1,11 @@
-import HttpStatus from 'http-status-codes'
-import request from 'supertest'
 import { Server } from 'http'
 import { Wallet } from 'ethers'
 
 import metricsReporter from '../../src/helpers/metrics-reporter'
 import { FileMeta, ipfs, etherscan } from '@aragonone/ipfs-pinner-shared'
+import { client, PinnerError } from '@aragonone/ipfs-pinner-client'
 
+const { SERVER_PORT } = process.env
 const TEST_OWNER_ADDR = '0x4e1326002e313a0245FC0a1C2fd8E0684C9a0C5A'
 const TEST_PRIVATE_KEY = '0x407eeeb61674af71138c7013be2a995b0e3323093dce7a4f3e58cf5112db236f'
 const wallet = new Wallet(TEST_PRIVATE_KEY)
@@ -31,6 +31,7 @@ describe('File creation', () => {
   beforeAll(() => {
     etherscan.getBlockNumber = () => Promise.resolve(10500000)
     server = require('../../src/index').server
+    client.setEndpoint(`http://localhost:${SERVER_PORT}`)
   })
 
   // cleanup
@@ -40,30 +41,24 @@ describe('File creation', () => {
     await ipfs.del(TEST_FILE_CID)
     await ipfs.gc()
     server.close()
-    metricsReporter.server.close()
+    metricsReporter.server!.close()
   })
 
   test('should create a file', async () => {
-    const res = await request(server)
-      .post('/files')
-      .field('owner', TEST_OWNER_ADDR)
-      .attach('file', TEST_FILE_CONTENT, TEST_FILE_NAME)
-    expect(res.status).toEqual(HttpStatus.OK)
-    expect(res.body).toEqual(TEST_FILE_META)
+    const fileMeta = await client.upload(TEST_OWNER_ADDR, TEST_FILE_CONTENT, TEST_FILE_NAME)
+    expect(fileMeta).toEqual(TEST_FILE_META)
     expect(await FileMeta.exists({cid: TEST_FILE_CID})).toEqual(true)
     expect(await ipfs.exists(TEST_FILE_CID)).toEqual(true)
   })
   
   test('should get single file', async () => {
-    const res = await request(server).get(`/files/${TEST_FILE_CID}`).send()
-    expect(res.status).toEqual(HttpStatus.OK)
-    expect(res.body).toEqual(TEST_FILE_META)
+    const fileMeta = await client.findOne(TEST_FILE_CID)
+    expect(fileMeta).toEqual(TEST_FILE_META)
   })
   
   test('should get list of files', async () => {
-    const res = await request(server).get(`/files`).send()
-    expect(res.status).toEqual(HttpStatus.OK)
-    expect(res.body).toEqual({
+    const fileMetaPage = await client.findAll(TEST_OWNER_ADDR)
+    expect(fileMetaPage).toEqual({
       total: 1,
       results: [TEST_FILE_META]
     })
@@ -72,11 +67,18 @@ describe('File creation', () => {
   test('should fail to delete a file with bad signature', async () => {
     const timestamp = Date.now()
     const signature = 'test'
-    const res = await request(server).post(`/files/${TEST_FILE_CID}:delete`).send({
-      signature,
-      timestamp
-    })
-    expect(res.status).toEqual(HttpStatus.BAD_REQUEST)
+    let pinnerErrors: any
+    try {
+      await client.delete(TEST_FILE_CID, signature, timestamp)
+    }
+    catch (err) {
+      if (err instanceof PinnerError) {
+        pinnerErrors = err.errors
+      }
+    }
+    expect(pinnerErrors).toEqual([
+      { signature: 'Given signature is not valid' }
+    ])
     expect(await FileMeta.exists({cid: TEST_FILE_CID})).toEqual(true)
     expect(await ipfs.exists(TEST_FILE_CID)).toEqual(true)
   })
@@ -84,12 +86,8 @@ describe('File creation', () => {
   test('should delete a file with correct signature', async () => {
     const timestamp = Date.now()
     const signature = await wallet.signMessage(timestamp.toString())
-    const res = await request(server).post(`/files/${TEST_FILE_CID}:delete`).send({
-      signature,
-      timestamp
-    })
-    expect(res.status).toEqual(HttpStatus.OK)
-    expect(res.body).toEqual({
+    const deleteStatus = await client.delete(TEST_FILE_CID, signature, timestamp)
+    expect(deleteStatus).toEqual({
       deleted: true
     })
     expect(await FileMeta.exists({cid: TEST_FILE_CID})).toEqual(false)

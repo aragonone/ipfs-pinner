@@ -7,6 +7,7 @@
     "test": "jest",
     "build": "yarn lint && yarn check-types && yarn build:js",
     "build:js": "babel ./src --out-dir ./build --extensions .ts --root-mode upward",
+    "build:client": "lerna run build --scope '*/*-client' --stream",
     "build:shared": "lerna run build --scope '*/*-shared' --stream",
     "build:clean": "yarn clean && yarn build",
     "clean": "rm -rf ./build",
@@ -16,6 +17,7 @@
     "db:setup": "lerna run db:setup --scope '*/*-shared' --stream"
   },
   "dependencies": {
+    "@aragonone/ipfs-pinner-client": "^0.0.1",
     "@aragonone/ipfs-pinner-shared": "^0.0.1",
     "@koa/cors": "^3.1.0",
     "@koa/multer": "^3.0.0",
@@ -37,8 +39,6 @@
     "@types/koa__cors": "^3.0.1",
     "@types/koa__multer": "^2.0.1",
     "@types/koa__router": "^8.0.2",
-    "@types/multer": "^1.4.3",
-    "@types/supertest": "^2.0.10",
-    "supertest": "^4.0.2"
+    "@types/multer": "^1.4.3"
   }
 }

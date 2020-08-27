@@ -7,6 +7,10 @@ WORKDIR /app
 COPY ./package.json /app/package.json
 COPY ./lerna.json /app/lerna.json
 
+# copy client package json
+RUN mkdir -p /packages/client
+COPY ./packages/client/package.json /app/packages/client/package.json
+
 # copy shared package json
 RUN mkdir -p /packages/shared
 COPY ./packages/shared/package.json /app/packages/shared/package.json
@@ -22,7 +26,7 @@ COPY ./packages/worker/package.json /app/packages/worker/package.json
 # install dependencies
 COPY ./yarn.lock /app/yarn.lock
 RUN yarn install
-RUN yarn lerna bootstrap
+RUN yarn lerna link
 
 # try building the app
 COPY . .
