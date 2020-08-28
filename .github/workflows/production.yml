@@ -48,4 +48,5 @@ jobs:
     needs: deploy
     steps:
     - uses: actions/checkout@v2
-    - run: .github/scripts/npm-publish.sh ${{secrets.NPM_TOKEN}}
+    - run: docker login docker.pkg.github.com -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
+    - run: .github/scripts/npm-publish.sh $REPO:${GITHUB_REF##*/} ${{secrets.NPM_TOKEN}}
