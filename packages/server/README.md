@@ -4,7 +4,7 @@ This package exposes the REST API.
 
 ## REST API
 
-### Upload content
+### 1. Upload content
 
 **Request:**
 
@@ -28,7 +28,7 @@ owner: "0x..."
 - Code: `400 Bad Request`
 - Body:
 
-```json
+```
 {
   "errors": [
     { "file": "File is already uploaded with cid <CID>" }
@@ -42,7 +42,7 @@ owner: "0x..."
 }
 ```
 
-### Delete pin and metadata
+### 2. Delete pin and metadata
 
 **Request:**
 
@@ -74,7 +74,7 @@ owner: "0x..."
 - Code: `400 Bad Request`
 - Body:
 
-```json
+```
 {
   "errors": [
     { "timestamp": "A timestamp must be given" }
@@ -105,7 +105,7 @@ owner: "0x..."
 }
 ```
 
-### Get files
+### 3. Get files
 
 **Request:**
 
@@ -121,14 +121,14 @@ owner: "0x..."
 - Code: `200 OK`
 - Body:
 
-```json
+```
 {
   "total": 100,
   "results": [see GET metadata below]
 }
 ```
 
-### Get metadata
+### 4. Get metadata
 
 **Request:**
 
@@ -140,7 +140,7 @@ owner: "0x..."
 - Code: `200 OK`
 - Body:
 
-```json
+```
 {
   owner: "0x...",
   cid: "Qm...",
