@@ -4,6 +4,7 @@ This service provides a blockchain-based authentication wrapper for ipfs request
 
 This is a mono-repo with the following packages:
 
+- [`client`](./packages/client): Client library for integrating into other projects.
 - [`server`](./packages/server): Exposes the REST API.
 - [`shared`](./packages/shared): Libraries shared among other sub-repos.
 - [`worker`](./packages/worker): Background worker for veryfing and cleaning uploaded files.
@@ -58,6 +59,7 @@ Local tests can then be run using:
 ```bash
 docker-compose exec test yarn test:server
 docker-compose exec test yarn test:worker
+docker-compose exec test yarn test:client
 ```
 
 ## Grafana dashboard updates
@@ -84,6 +86,8 @@ Deployments can be triggered using lerna:
 ```bash
 yarn lerna version [ major | minor | patch ]
 ```
+
+Note that publishing to NPM requires adding `NPM_TOKEN` with `Publish` permission in repo secrets.
 
 ### 3. Dashboard CI/CD
 

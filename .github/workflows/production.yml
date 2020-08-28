@@ -42,3 +42,11 @@ jobs:
     - run: .github/scripts/kubectl-wait-ready.sh ipfs-pinner
     # wait 10 sec for k8s to reroute ingress and check the endpoint
     - run: sleep 10 && curl --fail https://ipfs-pinner.backend.aragon.org
+
+  npm-publish:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+    - uses: actions/checkout@v2
+    - run: docker login docker.pkg.github.com -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
+    - run: .github/scripts/npm-publish.sh $REPO:${GITHUB_REF##*/} ${{secrets.NPM_TOKEN}}
