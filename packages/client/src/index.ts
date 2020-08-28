@@ -107,7 +107,6 @@ class Client {
       return new PinnerError([{ endpoint: `Could not connect to endpoint (${error.message})` }])
     }
     else {
-      console.log(error)
       return error
     }
   }
