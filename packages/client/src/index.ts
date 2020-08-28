@@ -3,7 +3,7 @@ import urljoin from 'url-join'
 
 const DEFAULT_ENDPOINT = 'https://ipfs-pinner.backend.aragon.org'
 
-type pinContent = string | Buffer | File | Blob
+type pinContent = Buffer | File | Blob
 interface fileMeta {
   owner: string,
   cid: string,
@@ -46,7 +46,7 @@ class Client {
     this.endpoint = endpoint
   }
 
-  async upload(ethAddress: string, content: pinContent, fileName?: string): Promise<fileMeta> {
+  async upload(ethAddress: string, content: pinContent, fileName: string): Promise<fileMeta> {
     try {
       const res = await this.post('/files')
         .field('owner', ethAddress)

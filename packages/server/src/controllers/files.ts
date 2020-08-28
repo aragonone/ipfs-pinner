@@ -38,7 +38,7 @@ export default class FilesController {
       })
     }
     catch (err) {
-      await deleteTempFile(file.path)
+      if (file?.path) await deleteTempFile(file.path)
       throw err
     }
     await deleteTempFile(file.path)
