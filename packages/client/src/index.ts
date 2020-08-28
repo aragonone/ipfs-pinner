@@ -1,6 +1,7 @@
 import request from 'superagent'
+import urljoin from 'url-join'
 
-const DEFAULT_ENDPOINT = 'https://ipfs-pinner.backend.aragon.org/'
+const DEFAULT_ENDPOINT = 'https://ipfs-pinner.backend.aragon.org'
 
 type pinContent = string | Buffer | File | Blob
 interface fileMeta {
@@ -93,10 +94,10 @@ class Client {
   }
 
   private get(path = '/') {
-    return request.get(this.endpoint + path)
+    return request.get(urljoin(this.endpoint, path))
   }
   private post(path = '/') {
-    return request.post(this.endpoint + path)
+    return request.post(urljoin(this.endpoint, path))
   }
   private getError(error: any) {
     if (error.response?.body?.errors) {
