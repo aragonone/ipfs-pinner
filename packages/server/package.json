@@ -1,6 +1,6 @@
 {
   "name": "@aragonone/ipfs-pinner-server",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "license": "GPL-3.0-or-later",
   "scripts": {
     "lint": "eslint src/** --ext .ts",
@@ -17,8 +17,8 @@
     "db:setup": "lerna run db:setup --scope '*/*-shared' --stream"
   },
   "dependencies": {
-    "@aragonone/ipfs-pinner-client": "^0.0.2",
-    "@aragonone/ipfs-pinner-shared": "^0.0.2",
+    "@aragonone/ipfs-pinner-client": "^1.0.0",
+    "@aragonone/ipfs-pinner-shared": "^1.0.0",
     "@koa/cors": "^3.1.0",
     "@koa/multer": "^3.0.0",
     "@koa/router": "^9.0.1",

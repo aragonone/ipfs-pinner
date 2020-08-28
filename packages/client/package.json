@@ -1,6 +1,6 @@
 {
   "name": "@aragonone/ipfs-pinner-client",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "license": "GPL-3.0-or-later",
   "repository": "https://github.com/aragonone/ipfs-pinner",
   "main": "build/index.js",

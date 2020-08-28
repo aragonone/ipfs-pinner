@@ -1,6 +1,6 @@
 {
   "name": "@aragonone/ipfs-pinner-shared",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "license": "GPL-3.0-or-later",
   "main": "build/index.js",
   "types": "build/index.d.ts",
