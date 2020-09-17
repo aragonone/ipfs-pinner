@@ -283,7 +283,7 @@
       },
       "targets": [
         {
-          "expr": "{app=\"$service\",container_name=~\".*server.*\"}",
+          "expr": "{app=\"$service\",container=~\".*server.*\"}",
           "refId": "A"
         }
       ],
@@ -613,7 +613,7 @@
       },
       "targets": [
         {
-          "expr": "{app=\"$service\",container_name=~\".*worker.*\"}",
+          "expr": "{app=\"$service\",container=~\".*worker.*\"}",
           "refId": "A"
         }
       ],
