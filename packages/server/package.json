@@ -1,6 +1,6 @@
 {
   "name": "@aragonone/ipfs-pinner-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "GPL-3.0-or-later",
   "scripts": {
     "lint": "eslint src/** --ext .ts",
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@aragonone/ipfs-pinner-client": "^1.0.0",
-    "@aragonone/ipfs-pinner-shared": "^1.0.0",
+    "@aragonone/ipfs-pinner-shared": "^1.0.1",
     "@koa/cors": "^3.1.0",
     "@koa/multer": "^3.0.0",
     "@koa/router": "^9.0.1",
