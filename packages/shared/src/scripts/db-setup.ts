@@ -1,5 +1,6 @@
 import Knex from 'knex'
 import sleep from '../helpers/sleep'
+import { SECONDS } from '../helpers/times'
 
 import config from '../database/config'
 const knex = Knex(config)
@@ -12,7 +13,7 @@ async function waitConnection() {
     catch (error) {
       if (error.code == 'ECONNREFUSED') {
         console.log('Database connection timed out, retrying in 5 seconds...')
-        await sleep(5)
+        await sleep(5 * SECONDS)
       }
       else {
         throw error
