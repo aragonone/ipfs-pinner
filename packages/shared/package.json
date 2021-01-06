@@ -16,7 +16,7 @@
   "dependencies": {
     "@promster/metrics": "^4.1.10",
     "@promster/server": "^4.2.12",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "ipfs-http-client": "^45.0.0",
     "knex": "^0.21.2",
     "objection": "^2.2.1",
